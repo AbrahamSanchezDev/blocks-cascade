@@ -30,11 +30,18 @@ public class GridManager : MonoBehaviour
     private Block[,] grid;
     private bool isProcessing = false;
 
+    [Header("Audio")]
+    [SerializeField]
+    private AudioSource theClickAudioSource;
+    [SerializeField]
+    private AudioSource theCollapseAudioSource;
+
     protected void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+
         }
         else
         {
@@ -123,6 +130,11 @@ public class GridManager : MonoBehaviour
     {
         if (isProcessing) return;
 
+        if (theClickAudioSource)
+        {
+            theClickAudioSource.Play();
+        }
+
         StartCoroutine(ProcessBlockCollection(clickedBlock));
     }
 
@@ -136,6 +148,7 @@ public class GridManager : MonoBehaviour
         // Only remove if there are 2 or more connected blocks
         if (connectedBlocks.Count > 1)
         {
+
             // Store the original clicked position for chain reaction checking
             Vector2Int originalPosition = new Vector2Int(clickedBlock.X, clickedBlock.Y);
 
@@ -197,6 +210,12 @@ public class GridManager : MonoBehaviour
                 // Only process if it's a valid match (2+ blocks)
                 if (positionMatches.Count > 1)
                 {
+
+                    if (theCollapseAudioSource)
+                    {
+                        theCollapseAudioSource.Play();
+                    }
+                    
                     chainCount++;
                     foundMatches = true;
 

@@ -35,6 +35,10 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Button makeMoveButton;
 
+    [Header("Audio")]
+    [SerializeField]
+    private AudioSource replayAudioSource;
+
     [Header("Debug")]
     // For testing in Task 2 - will be removed in Task 3
     [SerializeField]
@@ -65,6 +69,10 @@ public class GameManager : MonoBehaviour
 
     public void InitializeGame()
     {
+        if (replayAudioSource != null)
+        {
+            replayAudioSource.Play();
+        }
         currentScore = 0;
         movesRemaining = initialMoves;
         isGameActive = true;
@@ -126,14 +134,17 @@ public class GameManager : MonoBehaviour
     {
         return isGameActive && movesRemaining > 0;
     }
+
     public int GetMovesRemaining()
     {
         return movesRemaining;
     }
+
     public void ShowGameOver()
     {
         EndGame();
     }
+
     public void ResetGame()
     {
         InitializeGame();
